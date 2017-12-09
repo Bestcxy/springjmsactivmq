@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/jms 
+       http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+       http://activemq.apache.org/schema/core
+       http://activemq.apache.org/schema/core/activemq-core-5.5.0.xsd
+      ">
+      <!-- http://blog.csdn.net/g39173/article/details/53538484;
+      http://blog.csdn.net/jianfpeng241241/article/details/51678695 -->
+      <!-- ActiveMQ 管理页面 http://localhost:8161/admin/  D:\apache-activemq-5.14.5\conf\jetty-realm.properties 配置用户名和密码 -->
+      <!-- 
+      	创建连接工厂-使用ActiveMQ 自带的标签库 org.apache.activemq.spring.ActiveMQConnectionFactory
+      	brokerURL 消息代理的位置  
+      	trustAllPackages 新版本的Bean传递安全机制:http://activemq.apache.org/objectmessage.html
+      -->
+      <!-- <amq:connectionFactory id="connectionFactory" brokerURL="tcp://localhost:61616" /> -->
+      <bean id="connectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">
+		    <property name="brokerURL" value="tcp://localhost:61616"/>
+		    <property name="trustAllPackages" value="true"/>
+		</bean>
+      
+      <!-- 使用 JmsTemplate 的情况下非必须配置-开始-->
+	      <!-- 声明消息目的地-类型：队列  ActiveMQ 自带标签库  org.apache.activemq.command.ActiveMQQueue-->
+	     <!--  <amq:queue id="queue" physicalName="user.queue"/> -->
+	      
+	       <!-- 声明消息目的地-类型：主题  ActiveMQ 自带标签库  org.apache.activemq.command.ActiveMQTopic-->
+	      <!-- <amq:topic id="topic" physicalName="user.topic"/> -->
+      <!-- 使用 JmsTemplate 的情况下非必须配置-结束-->
+      
+      <!-- 使用JMS 消息转化器：默认即为   SimpleMessageConverter-->
+      <bean id="messageConverter" class="org.springframework.jms.support.converter.SimpleMessageConverter"/>
+      
+      <!-- 装配 JMS 模板 :用于向“队列”或者“主题” 目标发送消息集成代码块-消息为User实体类型-->
+      <bean id="jmsBeanTemplate" class="org.springframework.jms.core.JmsTemplate">
+      	<property name="connectionFactory" ref="connectionFactory"/>
+      	<!-- 指定默认目标的id -->
+      	<property name="defaultDestinationName" value="user.queue"/>
+      	<!-- 默认messageConveter即为：SimpleMessageConverter -->
+      	<property name="messageConverter" ref="messageConverter"/>
+      </bean>
+      
+      <!-- 装配 JMS 模板 :用于向“队列”或者“主题” 目标发送消息集成代码块-消息为String 类型-->
+      <bean id="jmsStringTemplate" class="org.springframework.jms.core.JmsTemplate">
+      	<property name="connectionFactory" ref="connectionFactory"/>
+      	<!-- 指定默认目标的id -->
+      	<property name="defaultDestinationName" value="string.queue"/>
+      	<!-- 默认messageConveter即为：SimpleMessageConverter -->
+      	<property name="messageConverter" ref="messageConverter"/>
+      </bean>
+      
+      <!-- 配置JMS监听器 -->
+      <!-- 监听器处理类和接受消息的方法-可代替JmsBeanReceiveServiceImpl.java，
+      	区别在于 JmsBeanReceiveServiceImpl.java需要编写调用代码，
+      	监听器中则是消息到来即自动调用ref 的 method -->
+      <bean id="jmsBeanMessageHandler" class="com.bestcxx.stu.jms.handler.JmsBeanMessageHandler"/>
+      <jms:listener-container connection-factory="connectionFactory">
+      	<jms:listener destination="user.queue" ref="jmsBeanMessageHandler" method="beanMessageHandler"/>
+      </jms:listener-container>
+      
+      <!-- 监听器处理类和接受消息的方法-可代替JmsStringReceiveServiceImpl.java
+      	区别在于 JmsStringReceiveServiceImpl.java需要编写调用代码，
+      	监听器中则是消息到来即自动调用ref 的 method -->
+      <bean id="jmsStringMessageHandler" class="com.bestcxx.stu.jms.handler.JmsStringMessageHandler"/>
+      <jms:listener-container connection-factory="connectionFactory">
+      	<jms:listener destination="string.queue" ref="jmsStringMessageHandler" method="stringMessageHandler"/>
+      </jms:listener-container>
+      
+</beans>
