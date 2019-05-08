@@ -1,5 +1,5 @@
-# springjms
-Spring JMS
+# springjmsactivemq
+Spring JMS 结合 ActiveMQ
 
 项目：springjms
 springjms 结合 acticemq 学习
