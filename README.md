@@ -1,9 +1,10 @@
-# Spring-JMS
+# springjms
 Spring JMS
 
-ÏîÄ¿£ºSpringJMS-ActiveMQ-Basic/springjms
+é¡¹ç›®ï¼šspringjms
+springjms ç»“åˆ acticemq å­¦ä¹ 
 Active MQ:apache-activemq-5.14.5
-Active MQ¹ÜÀíÒ³ÃæµÇÂ½£º http://localhost:8161/admin/ £» 
-ÅäÖÃÓÃ»§ÃûºÍÃÜÂë  D:\apache-activemq-5.14.5\conf\jetty-realm.properties 
-Spring JMS  ActiveMQ ÏûÏ¢µÄ»ùÓÚJmsTemplateµÄ·¢ËÍºÍ½ÓÊÕ£»BeanºÍStringÀàĞÍÏûÏ¢£»»ùÓÚÏûÏ¢¼àÌıÈİÆ÷ºÍ¼àÌıÆ÷µÄÏûÏ¢Òì²½½ÓÊÕºÍ´¦Àí¡£
+Active MQç®¡ç†é¡µé¢ç™»é™†ï¼š http://localhost:8161/admin/ ï¼› 
+é…ç½®ç”¨æˆ·åå’Œå¯†ç   D:\apache-activemq-5.14.5\conf\jetty-realm.properties 
+Spring JMS  ActiveMQ æ¶ˆæ¯çš„åŸºäºJmsTemplateçš„å‘é€å’Œæ¥æ”¶ï¼›Beanå’ŒStringç±»å‹æ¶ˆæ¯ï¼›åŸºäºæ¶ˆæ¯ç›‘å¬å®¹å™¨å’Œç›‘å¬å™¨çš„æ¶ˆæ¯å¼‚æ­¥æ¥æ”¶å’Œå¤„ç†ã€‚
        
